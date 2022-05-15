@@ -1,0 +1,58 @@
+<div class="container">
+
+
+<h3 style="font-weight: bold;"> Temperature Sensor</h3>
+<p style="margin: 2vw;"><i><b>
+    Type the device id concatenated to temperature reading in hexa and press enter
+</b></i></p>
+
+  <input placeholder="Ex: 0x4822264014" [(ngModel)]="sensorsTemps" (keyup.enter)="onEnter()" style="margin: 0 2vw; width: 30%;" required>
+  <div style="margin: 2vw 0 0 2vw; width: 30%;" >
+    <div *ngIf="errorMsg" class="alert alert-danger" role="alert" >
+      {{errorMsg}}
+    </div>
+    <div *ngIf="successMsg" class="alert alert-success" role="alert">
+      {{successMsg}}
+    </div>
+</div>
+
+<div class="row">
+
+<div class="col-md-6 " >
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin: 2vw; max-height: 200px; overflow: auto;">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Device Id Column -->
+    <ng-container matColumnDef="deviceId">
+      <th mat-header-cell *matHeaderCellDef> Device Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
+    </ng-container>
+  
+    <!-- Temp Value Column -->
+    <ng-container matColumnDef="tempValue">
+      <th mat-header-cell *matHeaderCellDef> Temperature Value </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastTemp}} </td>
+    </ng-container>
+
+    <!-- Select Column -->
+    <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> Details </th>
+        <td mat-cell *matCellDef="let element"> 
+          <button (click)="getDeviceDetails(element.deviceId)" style="border: none; background-color: white">
+            <mat-icon>info</mat-icon>
+          </button>
+
+        </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<div class="col-md-6">
+  <app-device-details-table *ngIf="deviceDetails" [deviceDetails]="deviceDetails"></app-device-details-table>
+</div>
+</div>
+</div>
